@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sobre mí – Nikoly Beatriz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="{{ url_for('index') }}">Inicio</a></li>
+            <li><a href="{{ url_for('about') }}">Sobre mí</a></li>
+            <li><a href="{{ url_for('projects') }}">Proyectos</a></li>
+            <li><a href="{{ url_for('contact') }}">Contacto</a></li>
+        </ul>
+    </nav>
+    <section class="content">
+        <h2>Sobre mí</h2>
+        <p>Me llamo <strong>Nikoly Beatriz Schmaeller Loch</strong>. Actualmente soy desarrolladora de software Junior Full‑Stack. Me manejo con bases de datos, backend y tecnologías front‑end como HTML, CSS y JavaScript. Tengo 20 años, estudié en una secundaria técnica y ahora estoy cursando la tecnicatura de desarrollo de software, en mi segundo año.</p>
+        <p>Me gusta combinar lógica y creatividad, por eso el tema de mi portafolio está inspirado en el <em>universo</em>: colores oscuros, estrellas y nebulosas que representan infinitas posibilidades.</p>
+    </section>
+    <footer>
+        <p>© 2026 Nikoly Beatriz – Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>

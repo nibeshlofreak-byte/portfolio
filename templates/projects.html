@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Proyectos – Nikoly Beatriz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="{{ url_for('index') }}">Inicio</a></li>
+            <li><a href="{{ url_for('about') }}">Sobre mí</a></li>
+            <li><a href="{{ url_for('projects') }}">Proyectos</a></li>
+            <li><a href="{{ url_for('contact') }}">Contacto</a></li>
+        </ul>
+    </nav>
+    <section class="content">
+        <h2>Proyectos</h2>
+        {% for project in projects %}
+        <div class="project">
+            {% if project.image_url %}
+            <img src="{{ project.image_url }}" alt="{{ project.title }}" />
+            {% else %}
+            <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?fit=crop&w=400&q=80" alt="{{ project.title }}" />
+            {% endif %}
+            <div class="project-details">
+                <h3>{{ project.title }}</h3>
+                <p>{{ project.description }}</p>
+                <p><strong>Tecnologías:</strong> {{ project.technologies }}</p>
+                {% if project.github_url %}
+                <p><a href="{{ project.github_url }}" target="_blank">Ver código (GitHub)</a></p>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </section>
+    <footer>
+        <p>© 2026 Nikoly Beatriz – Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>
