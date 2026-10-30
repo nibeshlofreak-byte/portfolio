@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block title %}Nuevo Registro — Nikoly{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="page-header-text">
+    <h1>&#9998; Nuevo Registro</h1>
+    <p class="subtitle">Se guardara en SQL Server &mdash; base <strong>Nikoly</strong></p>
+  </div>
+  <a href="{{ url_for('index') }}" class="btn btn-outline">&#8592; Volver</a>
+</div>
+
+<div class="form-container">
+  <div class="card form-card">
+
+    {% if errores %}
+    <div class="error-box">
+      <strong>&#9888; Corregí los siguientes errores:</strong>
+      <ul>{% for e in errores %}<li>{{ e }}</li>{% endfor %}</ul>
+    </div>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('formulario') }}" id="form-registro" novalidate>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="nombre" class="form-label">Nombre <span class="required">*</span></label>
+          <input id="nombre" type="text" name="nombre" class="input-field"
+                 placeholder="Ej: Maria" value="{{ form_data.nombre or '' }}" required />
+        </div>
+        <div class="form-group">
+          <label for="apellido" class="form-label">Apellido <span class="required">*</span></label>
+          <input id="apellido" type="text" name="apellido" class="input-field"
+                 placeholder="Ej: Gonzalez" value="{{ form_data.apellido or '' }}" required />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="dni" class="form-label">DNI <span class="required">*</span></label>
+        <input id="dni" type="text" name="dni" class="input-field"
+               placeholder="Ej: 35000000" maxlength="8" pattern="[0-9]{7,8}"
+               value="{{ form_data.dni or '' }}" required />
+        <small class="form-hint">7 u 8 digitos, solo numeros</small>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Estado laboral <span class="required">*</span></label>
+        <div class="radio-group">
+          {% for estado in estados_laborales %}
+          <label class="radio-card {% if form_data.get('estado_laboral') == estado %}selected{% endif %}">
+            <input type="radio" name="estado_laboral" value="{{ estado }}"
+                   {% if form_data.get('estado_laboral') == estado %}checked{% endif %} required />
+            <span class="radio-icon">
+              {% if estado == 'Trabaja' %}&#128188;
+              {% elif estado == 'No trabaja' %}&#127968;
+              {% else %}&#128218;{% endif %}
+            </span>
+            <span class="radio-label">{{ estado }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="obra_social" class="form-label">Obra social <span class="required">*</span></label>
+        <select id="obra_social" name="obra_social" class="input-field select-field" required>
+          <option value="" disabled {% if not form_data.get('obra_social') %}selected{% endif %}>
+            — Selecciona una obra social —
+          </option>
+          {% for os in obras_sociales %}
+          <option value="{{ os }}" {% if form_data.get('obra_social') == os %}selected{% endif %}>
+            {{ os }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary btn-large" id="btn-submit">
+          &#128190; Guardar en SQL Server
+        </button>
+        <a href="{{ url_for('index') }}" class="btn btn-outline">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.querySelectorAll('.radio-card input[type="radio"]').forEach(r => {
+  r.addEventListener('change', () => {
+    document.querySelectorAll('.radio-card').forEach(c => c.classList.remove('selected'));
+    r.closest('.radio-card').classList.add('selected');
+  });
+});
+document.getElementById('dni').addEventListener('input', function() {
+  this.value = this.value.replace(/\D/g, '').slice(0, 8);
+});
+</script>
+{% endblock %}

@@ -1,31 +1,48 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contacto – Nikoly Beatriz</title>
+    <title>Contact – Nikoly Beatriz</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 </head>
 <body>
     <nav class="navbar">
+        <a href="{{ url_for('index') }}" class="nav-brand">NIKOLY.DEV</a>
         <ul>
-            <li><a href="{{ url_for('index') }}">Inicio</a></li>
-            <li><a href="{{ url_for('about') }}">Sobre mí</a></li>
-            <li><a href="{{ url_for('projects') }}">Proyectos</a></li>
-            <li><a href="{{ url_for('contact') }}">Contacto</a></li>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About Me</a></li>
+            <li><a href="{{ url_for('projects') }}">Projects</a></li>
+            <li><a href="{{ url_for('contact') }}" class="active">Contact</a></li>
         </ul>
     </nav>
-    <section class="content">
-        <h2>Contacto</h2>
-        <p>Puedes contactarme vía email:</p>
-        <p><a href="mailto:nikolybeatrizschmaellerloxh@gmail.com">nikolybeatrizschmaellerloxh@gmail.com</a></p>
-        <p>También estoy presente en:<br>
-            <a href="https://github.com/nikolybeatriz" target="_blank">GitHub</a> | 
-            <a href="https://www.linkedin.com/in/nikolybeatriz" target="_blank">LinkedIn</a>
-        </p>
-    </section>
+
+    <main class="content">
+        <h2>Get in Touch</h2>
+        <p class="section-subtitle">Let's connect, collaborate, and build something extraordinary together.</p>
+
+        <div class="contact-container">
+            <div class="contact-item">
+                <strong>Email:</strong>
+                <a href="mailto:nikolybeatrizschmaellerloxh@gmail.com">nikolybeatrizschmaellerloxh@gmail.com</a>
+            </div>
+            <div class="contact-item">
+                <strong>GitHub:</strong>
+                <a href="https://github.com/nibeshlofreak-byte" target="_blank" rel="noopener noreferrer">github.com/nibeshlofreak-byte</a>
+            </div>
+            <div class="contact-item">
+                <strong>LinkedIn:</strong>
+                <a href="https://www.linkedin.com/in/nikolybeatriz" target="_blank" rel="noopener noreferrer">linkedin.com/in/nikolybeatriz</a>
+            </div>
+            <div class="contact-item">
+                <strong>Location:</strong>
+                <span>Argentina (Available for remote opportunities)</span>
+            </div>
+        </div>
+    </main>
+
     <footer>
-        <p>© 2026 Nikoly Beatriz – Todos los derechos reservados.</p>
+        <p>© 2026 Nikoly Beatriz Schmaeller Loch – All rights reserved.</p>
     </footer>
 </body>
 </html>

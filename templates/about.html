@@ -1,27 +1,54 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sobre mí – Nikoly Beatriz</title>
+    <title>About Me – Nikoly Beatriz</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 </head>
 <body>
     <nav class="navbar">
+        <a href="{{ url_for('index') }}" class="nav-brand">NIKOLY.DEV</a>
         <ul>
-            <li><a href="{{ url_for('index') }}">Inicio</a></li>
-            <li><a href="{{ url_for('about') }}">Sobre mí</a></li>
-            <li><a href="{{ url_for('projects') }}">Proyectos</a></li>
-            <li><a href="{{ url_for('contact') }}">Contacto</a></li>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}" class="active">About Me</a></li>
+            <li><a href="{{ url_for('projects') }}">Projects</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact</a></li>
         </ul>
     </nav>
-    <section class="content">
-        <h2>Sobre mí</h2>
-        <p>Me llamo <strong>Nikoly Beatriz Schmaeller Loch</strong>. Actualmente soy desarrolladora de software Junior Full‑Stack. Me manejo con bases de datos, backend y tecnologías front‑end como HTML, CSS y JavaScript. Tengo 20 años, estudié en una secundaria técnica y ahora estoy cursando la tecnicatura de desarrollo de software, en mi segundo año.</p>
-        <p>Me gusta combinar lógica y creatividad, por eso el tema de mi portafolio está inspirado en el <em>universo</em>: colores oscuros, estrellas y nebulosas que representan infinitas posibilidades.</p>
-    </section>
+
+    <main class="content">
+        <h2>About Me</h2>
+        <p class="section-subtitle">Bridging logic, creativity, and modern software engineering.</p>
+
+        <div class="about-card">
+            <p>My name is <strong>Nikoly Beatriz Schmaeller Loch</strong>. I am a passionate <strong>Junior Full-Stack Software Developer</strong>. I specialize in designing scalable backend architectures, relational database management, and responsive front-end user experiences.</p>
+            <p>I graduated from a technical high school and am currently in my second year pursuing a higher degree in Software Development (TSDS - Tecnicatura Superior en Desarrollo de Software). My foundation covers hands-on full-stack development, object-oriented systems design, and local AI agent integrations.</p>
+            <p>I enjoy combining structural rigor with visual aesthetics. The cosmic theme of this portfolio is inspired by the universe: deep hues, nebulas, and constellations that represent infinite possibilities and curiosity in technology.</p>
+        </div>
+
+        <div class="skills-grid">
+            <div class="skill-box">
+                <h4>Backend & APIs</h4>
+                <p>Python, Flask, FastAPI, RESTful APIs, Uvicorn, Bcrypt Security, Business Logic Architecture</p>
+            </div>
+            <div class="skill-box">
+                <h4>Databases</h4>
+                <p>MySQL, Microsoft SQL Server, SQLite, SQLAlchemy, PyMySQL, PyODBC, Database Modeling & Queries</p>
+            </div>
+            <div class="skill-box">
+                <h4>Frontend & Mobile</h4>
+                <p>HTML5, CSS3, JavaScript, Flet (Flutter UI Engine), Tkinter / TTK custom GUI themes</p>
+            </div>
+            <div class="skill-box">
+                <h4>AI & Tools</h4>
+                <p>Ollama, Qwen2.5 Local LLM, Faker, Git, GitHub, Matplotlib Visual Analytics, Linux/Windows environments</p>
+            </div>
+        </div>
+    </main>
+
     <footer>
-        <p>© 2026 Nikoly Beatriz – Todos los derechos reservados.</p>
+        <p>© 2026 Nikoly Beatriz Schmaeller Loch – All rights reserved.</p>
     </footer>
 </body>
 </html>

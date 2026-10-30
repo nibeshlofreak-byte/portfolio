@@ -1,30 +1,190 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nikoly Beatriz – Portafolio</title>
+    <title>Nikoly Beatriz – Software Developer Portfolio</title>
     <link rel="stylesheet" href="static/css/style.css" />
 </head>
 <body>
     <nav class="navbar">
+        <a href="#home" class="nav-brand">NIKOLY.DEV</a>
         <ul>
-            <li><a href="index.html">Inicio</a></li>
-            <li><a href="about.html">Sobre mí</a></li>
-            <li><a href="projects.html">Proyectos</a></li>
-            <li><a href="contact.html">Contacto</a></li>
+            <li><a href="#home" class="active">Home</a></li>
+            <li><a href="#about">About Me</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
-    <section class="hero">
+
+    <header id="home" class="hero">
         <div class="hero-content">
-            <h1>¡Hola! Soy <span class="highlight">Nikoly Beatriz Schmaeller Loch</span></h1>
-            <p>Desarrolladora de software Junior Full‑Stack, apasionada por crear experiencias interactivas del universo.</p>
-            <a href="about.html" class="btn-primary">Conoceme</a>
+            <h1>Hello! I'm <span class="highlight">Nikoly Beatriz Schmaeller Loch</span></h1>
+            <p>Junior Full-Stack Software Developer passionate about crafting modern, robust, and interactive digital universe experiences.</p>
+            <div class="hero-cta">
+                <a href="#projects" class="btn-primary">View Featured Projects</a>
+                <a href="#about" class="btn-secondary">About Me</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="about" class="content">
+        <h2>About Me</h2>
+        <p class="section-subtitle">Bridging logic, creativity, and modern software engineering.</p>
+
+        <div class="about-card">
+            <p>My name is <strong>Nikoly Beatriz Schmaeller Loch</strong>. I am a <strong>Junior Full-Stack Software Developer</strong> focused on backend architectures, relational database management, and responsive front-end user experiences.</p>
+            <p>I graduated from a technical high school and am currently in my second year pursuing a degree in Software Development (TSDS - Tecnicatura Superior en Desarrollo de Software). My foundation covers hands-on full-stack development, object-oriented systems design, and local AI agent integrations.</p>
+            <p>The cosmic theme of this portfolio is inspired by the universe: deep hues, nebulas, and constellations that represent infinite possibilities and curiosity in technology.</p>
+        </div>
+
+        <div class="skills-grid">
+            <div class="skill-box">
+                <h4>Backend &amp; APIs</h4>
+                <p>Python, Flask, FastAPI, RESTful APIs, Uvicorn, Bcrypt Security, Business Logic Architecture</p>
+            </div>
+            <div class="skill-box">
+                <h4>Databases</h4>
+                <p>MySQL, Microsoft SQL Server, SQLite, SQLAlchemy, PyMySQL, PyODBC, Database Modeling &amp; Queries</p>
+            </div>
+            <div class="skill-box">
+                <h4>Frontend &amp; Mobile</h4>
+                <p>HTML5, CSS3, JavaScript, Flet (Flutter UI Engine), Tkinter / TTK custom GUI themes</p>
+            </div>
+            <div class="skill-box">
+                <h4>AI &amp; Tools</h4>
+                <p>Ollama, Qwen2.5 Local LLM, Faker, Git, GitHub, Matplotlib Visual Analytics, Linux/Windows environments</p>
+            </div>
         </div>
     </section>
+
+    <section id="projects" class="content">
+        <h2>Featured Projects</h2>
+        <p class="section-subtitle">Real-world software engineering applications, POS systems, local AI integrations, and mobile/desktop platforms.</p>
+
+        <div class="projects-container">
+            <!-- Project 1: PharmaPOS -->
+            <article class="project-card">
+                <div class="project-image-wrap">
+                    <img src="static/img/pharmacy_pos.png" alt="PharmaPOS" loading="lazy" />
+                </div>
+                <div class="project-details">
+                    <h3>PharmaPOS – Multi-Branch POS &amp; FEFO Analytics</h3>
+                    <p>Enterprise Pharmacy Point-of-Sale (POS) and inventory management system built with Python. Features multi-branch synchronization, strict FEFO (First Expired, First Out) batch deduction, bcrypt RBAC security, real-time KPI metrics with interactive Matplotlib charts, and thermal ticket printing.</p>
+                    
+                    <div class="tech-tags">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">Tkinter</span>
+                        <span class="tech-tag">Matplotlib</span>
+                        <span class="tech-tag">SQLite</span>
+                        <span class="tech-tag">MySQL</span>
+                        <span class="tech-tag">Bcrypt</span>
+                        <span class="tech-tag">FEFO Algorithm</span>
+                    </div>
+
+                    <div class="project-actions">
+                        <a href="https://github.com/nibeshlofreak-byte/portfolio/tree/main/projects/pharmacy-pos" target="_blank" rel="noopener noreferrer" class="btn-code">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                            </svg>
+                            Explore Source Code
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Project 2: FormIA -->
+            <article class="project-card">
+                <div class="project-image-wrap">
+                    <img src="static/img/formia_ai.svg" alt="FormIA" loading="lazy" />
+                </div>
+                <div class="project-details">
+                    <h3>FormIA – AI-Powered Smart Form &amp; Local LLM Assistant</h3>
+                    <p>Intelligent web platform integrating dynamic multi-attribute form validation with on-device private AI (Ollama + Qwen2.5). Generates synthetic testing profiles on-demand with Faker and features a conversational assistant for profile inquiries and data analytics.</p>
+                    
+                    <div class="tech-tags">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">Flask</span>
+                        <span class="tech-tag">Ollama</span>
+                        <span class="tech-tag">Qwen2.5</span>
+                        <span class="tech-tag">MySQL</span>
+                        <span class="tech-tag">SQL Server</span>
+                        <span class="tech-tag">Faker</span>
+                        <span class="tech-tag">JavaScript</span>
+                    </div>
+
+                    <div class="project-actions">
+                        <a href="https://github.com/nibeshlofreak-byte/portfolio/tree/main/projects/formia-ai-form" target="_blank" rel="noopener noreferrer" class="btn-code">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                            </svg>
+                            Explore Source Code
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Project 3: Lotus -->
+            <article class="project-card">
+                <div class="project-image-wrap">
+                    <img src="static/img/lotus_esports.png" alt="Lotus eSports" loading="lazy" />
+                </div>
+                <div class="project-details">
+                    <h3>Lotus – Gaming &amp; eSports Tournament Platform</h3>
+                    <p>Cross-platform desktop and mobile eSports platform built using Python and Flet (Flutter rendering engine). Supports custom tournament bracket creation, live streaming viewer simulation, gamer community hubs, and dual online FastAPI / offline cryptographic authentication.</p>
+                    
+                    <div class="tech-tags">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">Flet</span>
+                        <span class="tech-tag">FastAPI</span>
+                        <span class="tech-tag">Uvicorn</span>
+                        <span class="tech-tag">MySQL</span>
+                        <span class="tech-tag">Pydantic</span>
+                        <span class="tech-tag">HTTPX</span>
+                        <span class="tech-tag">Cryptography</span>
+                    </div>
+
+                    <div class="project-actions">
+                        <a href="https://github.com/nibeshlofreak-byte/portfolio/tree/main/projects/lotus-esports" target="_blank" rel="noopener noreferrer" class="btn-code">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                            </svg>
+                            Explore Source Code
+                        </a>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section id="contact" class="content">
+        <h2>Get in Touch</h2>
+        <p class="section-subtitle">Let's connect, collaborate, and build something extraordinary together.</p>
+
+        <div class="contact-container">
+            <div class="contact-item">
+                <strong>Email:</strong>
+                <a href="mailto:nikolybeatrizschmaellerloxh@gmail.com">nikolybeatrizschmaellerloxh@gmail.com</a>
+            </div>
+            <div class="contact-item">
+                <strong>GitHub:</strong>
+                <a href="https://github.com/nibeshlofreak-byte" target="_blank" rel="noopener noreferrer">github.com/nibeshlofreak-byte</a>
+            </div>
+            <div class="contact-item">
+                <strong>LinkedIn:</strong>
+                <a href="https://www.linkedin.com/in/nikolybeatriz" target="_blank" rel="noopener noreferrer">linkedin.com/in/nikolybeatriz</a>
+            </div>
+            <div class="contact-item">
+                <strong>Location:</strong>
+                <span>Argentina (Available for remote opportunities)</span>
+            </div>
+        </div>
+    </section>
+
     <footer>
-        <p>© 2026 Nikoly Beatriz – Todos los derechos reservados.</p>
+        <p>© 2026 Nikoly Beatriz Schmaeller Loch – All rights reserved.</p>
     </footer>
+
     <script src="static/js/script.js"></script>
 </body>
 </html>

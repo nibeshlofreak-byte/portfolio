@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block title %}Nuevo Registro{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="page-header-text">
+    <h1>✏️ Nuevo Registro</h1>
+    <p class="subtitle">Completá el formulario con los datos de la persona</p>
+  </div>
+  <a href="{{ url_for('index') }}" class="btn btn-outline">← Volver</a>
+</div>
+
+<div class="form-container">
+  <div class="card form-card">
+
+    {% if errores %}
+    <div class="error-box">
+      <strong>⚠️ Corregí los siguientes errores:</strong>
+      <ul>
+        {% for e in errores %}<li>{{ e }}</li>{% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('formulario') }}" id="form-registro" novalidate>
+
+      <div class="form-row">
+        <!-- NOMBRE -->
+        <div class="form-group">
+          <label for="nombre" class="form-label">Nombre <span class="required">*</span></label>
+          <input
+            id="nombre"
+            type="text"
+            name="nombre"
+            class="input-field {% if errores %}{% if not form_data.nombre %}input-error{% endif %}{% endif %}"
+            placeholder="Ej: María"
+            value="{{ form_data.nombre or '' }}"
+            required
+          />
+        </div>
+
+        <!-- APELLIDO -->
+        <div class="form-group">
+          <label for="apellido" class="form-label">Apellido <span class="required">*</span></label>
+          <input
+            id="apellido"
+            type="text"
+            name="apellido"
+            class="input-field"
+            placeholder="Ej: González"
+            value="{{ form_data.apellido or '' }}"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- DNI -->
+      <div class="form-group">
+        <label for="dni" class="form-label">DNI <span class="required">*</span></label>
+        <input
+          id="dni"
+          type="text"
+          name="dni"
+          class="input-field"
+          placeholder="Ej: 35000000"
+          maxlength="8"
+          pattern="[0-9]{7,8}"
+          value="{{ form_data.dni or '' }}"
+          required
+        />
+        <small class="form-hint">7 u 8 dígitos, solo números</small>
+      </div>
+
+      <!-- ESTADO LABORAL -->
+      <div class="form-group">
+        <label class="form-label">Estado laboral <span class="required">*</span></label>
+        <div class="radio-group" id="estado-laboral-group">
+          {% for estado in estados_laborales %}
+          <label class="radio-card {% if form_data.get('estado_laboral') == estado %}selected{% endif %}">
+            <input
+              type="radio"
+              name="estado_laboral"
+              value="{{ estado }}"
+              {% if form_data.get('estado_laboral') == estado %}checked{% endif %}
+              required
+            />
+            <span class="radio-icon">
+              {% if estado == 'Trabaja' %}💼
+              {% elif estado == 'No trabaja' %}🏠
+              {% else %}📚{% endif %}
+            </span>
+            <span class="radio-label">{{ estado }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- OBRA SOCIAL -->
+      <div class="form-group">
+        <label for="obra_social" class="form-label">Obra social <span class="required">*</span></label>
+        <select id="obra_social" name="obra_social" class="input-field select-field" required>
+          <option value="" disabled {% if not form_data.get('obra_social') %}selected{% endif %}>
+            — Seleccioná una obra social —
+          </option>
+          {% for os in obras_sociales %}
+          <option value="{{ os }}" {% if form_data.get('obra_social') == os %}selected{% endif %}>
+            {{ os }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- BOTONES -->
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary btn-large" id="btn-submit">
+          💾 Guardar registro
+        </button>
+        <a href="{{ url_for('index') }}" class="btn btn-outline">Cancelar</a>
+      </div>
+
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Radio cards interactivos
+document.querySelectorAll('.radio-card input[type="radio"]').forEach(radio => {
+  radio.addEventListener('change', () => {
+    document.querySelectorAll('.radio-card').forEach(c => c.classList.remove('selected'));
+    radio.closest('.radio-card').classList.add('selected');
+  });
+});
+
+// Validación solo numérica en DNI
+document.getElementById('dni').addEventListener('input', function() {
+  this.value = this.value.replace(/\D/g, '').slice(0, 8);
+});
+</script>
+{% endblock %}

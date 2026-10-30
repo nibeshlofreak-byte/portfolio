@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% block title %}Registros{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="page-header-text">
+    <h1>Panel de Registros</h1>
+    <p class="subtitle">Total: <strong id="total-count">{{ total }}</strong> personas &mdash; MySQL: <strong>formulario</strong></p>
+  </div>
+  <div class="header-actions">
+    <!-- Estado DB -->
+    <span id="db-badge" class="status-badge {% if db_ok %}online{% else %}offline{% endif %}">
+      <span class="status-dot"></span>
+      {% if db_ok %}MySQL OK{% else %}MySQL ERROR{% endif %}
+    </span>
+    <a href="{{ url_for('formulario') }}" class="btn btn-primary">&#43; Agregar</a>
+    <a href="{{ url_for('exportar') }}" class="btn btn-outline">&#8595; JSON</a>
+  </div>
+</div>
+
+{% if not db_ok %}
+<div class="alert-error-box">
+  <strong>&#9888; No se pudo conectar a MySQL</strong><br/>
+  <code>{{ db_error }}</code><br/><br/>
+  Verificá que MySQL esté corriendo en <strong>127.0.1.0:3306</strong> con usuario <code>root</code> / <code>admin</code>.
+</div>
+{% endif %}
+
+<!-- GENERADOR FAKER -->
+<div class="card faker-card">
+  <div class="card-header">
+    <h2>Generador Faker</h2>
+    <p>Genera personas ficticias argentinas e inserta directamente en MySQL</p>
+  </div>
+  <div class="faker-controls">
+    <div class="input-group">
+      <label for="faker-count">Cantidad (max 500)</label>
+      <input id="faker-count" type="number" min="1" max="500" value="10" class="input-field" />
+    </div>
+    <button id="btn-faker" class="btn btn-accent" onclick="generarFaker()" {% if not db_ok %}disabled{% endif %}>
+      <span class="btn-icon">&#9889;</span> Generar
+    </button>
+    <form method="POST" action="{{ url_for('limpiar') }}"
+          onsubmit="return confirm('Eliminar TODOS los registros de MySQL?')">
+      <button type="submit" class="btn btn-danger" {% if not db_ok %}disabled{% endif %}>
+        &#128465; Limpiar todo
+      </button>
+    </form>
+  </div>
+  <div id="faker-status" class="faker-status hidden"></div>
+</div>
+
+<!-- TABLA -->
+{% if registros %}
+<div class="card table-card">
+  <div class="table-wrapper">
+    <table class="data-table" id="tabla-registros">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>DNI</th>
+          <th>Estado</th>
+          <th>Obra Social</th>
+          <th>Fecha</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in registros %}
+        <tr class="table-row">
+          <td class="id-cell">{{ r.id }}</td>
+          <td>{{ r.nombre }}</td>
+          <td>{{ r.apellido }}</td>
+          <td class="dni-cell">{{ r.dni }}</td>
+          <td>
+            <span class="badge badge-{{ r.estado_laboral | replace(' ', '-') | lower }}">
+              {% if r.estado_laboral == 'Trabaja' %}&#128188;
+              {% elif r.estado_laboral == 'No trabaja' %}&#127968;
+              {% else %}&#128218;{% endif %}
+              {{ r.estado_laboral }}
+            </span>
+          </td>
+          <td>{{ r.obra_social }}</td>
+          <td class="fecha-cell">{{ r.fecha }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% else %}
+<div class="empty-state">
+  <div class="empty-icon">&#128219;</div>
+  <h3>Sin registros en MySQL</h3>
+  <p>Usa el generador Faker o agregá uno manualmente.</p>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+async function generarFaker() {
+  const cantidad = parseInt(document.getElementById("faker-count").value) || 10;
+  const btn = document.getElementById("btn-faker");
+  const status = document.getElementById("faker-status");
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Insertando en MySQL...';
+
+  try {
+    const resp = await fetch("/generar-faker", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ cantidad }),
+    });
+    const data = await resp.json();
+
+    if (data.ok) {
+      status.className = "faker-status success";
+      status.innerHTML = `&#10003; <strong>${data.generados}</strong> registros insertados en MySQL. Total: <strong>${data.total}</strong>`;
+      status.classList.remove("hidden");
+      setTimeout(() => location.reload(), 1200);
+    } else {
+      status.className = "faker-status error";
+      status.innerHTML = `&#10008; Error: ${data.error}`;
+      status.classList.remove("hidden");
+    }
+  } catch (e) {
+    status.className = "faker-status error";
+    status.innerHTML = "&#10008; Error de red.";
+    status.classList.remove("hidden");
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<span class="btn-icon">&#9889;</span> Generar';
+  }
+}
+
+// Polling del estado de la DB cada 10s
+async function pollDbStatus() {
+  try {
+    const r = await fetch("/db/status");
+    const d = await r.json();
+    const badge = document.getElementById("db-badge");
+    if (badge) {
+      badge.className = `status-badge ${d.online ? 'online' : 'offline'}`;
+      badge.innerHTML = `<span class="status-dot"></span>${d.online ? 'MySQL OK' : 'MySQL ERROR'}`;
+    }
+    const tc = document.getElementById("total-count");
+    if (tc && d.online) tc.textContent = d.total;
+  } catch {}
+}
+setInterval(pollDbStatus, 10000);
+</script>
+{% endblock %}

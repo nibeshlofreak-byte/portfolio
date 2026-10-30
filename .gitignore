@@ -77,6 +77,19 @@ ENV/
 env.bak/
 venv.bak/
 
+# Databases
+*.db
+*.sqlite3
+instance/
+portfolio.db
+
+# Build artifacts & packages
+build/
+dist/
+*.apk
+*.egg-info/
+
+
 # MacOS
 .DS_Store
 

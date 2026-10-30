@@ -1,0 +1,33 @@
+==========================================
+             Farmacia Central             
+      CUIDANDO TU SALUD Y BIENESTAR       
+          RFC: FSH-20261014-K09           
+    Av. Salud y Esperanza #450, Centro    
+              (555) 789-2345              
+==========================================
+FOLIO:    TCK-202610191208-001
+SUCURSAL: Farmacia Central
+FECHA:    19/10/2026 12:08:10
+CAJERO:   Nikoly Beatriz Schmaeller Loch
+CLIENTE:  Público General
+------------------------------------------
+CANT DESCRIPCIÓN                     TOTAL
+------------------------------------------
+20   Amoxicilina 500mg (Ca..      $1780.00
+  -> Lote: LOTE-AMX-2026-X (Vence: 28/12/2026)
+3    Amoxicilina 500mg (Ca..       $267.00
+  -> Lote: LOTE-AMX-2027-Y (Vence: 18/11/2027)
+------------------------------------------
+SUBTOTAL:                 $       2047.00
+I.V.A. (16%):             $        327.52
+TOTAL A PAGAR:            $       2374.52
+------------------------------------------
+MÉTODO DE PAGO:           Tarjeta de Crédito
+IMPORTE RECIBIDO:         $       9000.00
+CAMBIO ENTREGADO:         $          0.00
+==========================================
+  * MEDICAMENTOS CERTIFICADOS POR FEFO *  
+CONSERVE SU TICKET PARA CUALQUIER ACLARACIÓN
+NO SE ACEPTAN DEVOLUCIONES DE MEDICAMENTOS
+       ¡GRACIAS POR SU PREFERENCIA!       
+==========================================

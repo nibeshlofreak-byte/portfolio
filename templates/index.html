@@ -1,30 +1,37 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nikoly Beatriz – Portafolio</title>
+    <title>Nikoly Beatriz – Software Developer Portfolio</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 </head>
 <body>
     <nav class="navbar">
+        <a href="{{ url_for('index') }}" class="nav-brand">NIKOLY.DEV</a>
         <ul>
-            <li><a href="{{ url_for('index') }}">Inicio</a></li>
-            <li><a href="{{ url_for('about') }}">Sobre mí</a></li>
-            <li><a href="{{ url_for('projects') }}">Proyectos</a></li>
-            <li><a href="{{ url_for('contact') }}">Contacto</a></li>
+            <li><a href="{{ url_for('index') }}" class="active">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About Me</a></li>
+            <li><a href="{{ url_for('projects') }}">Projects</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact</a></li>
         </ul>
     </nav>
+
     <section class="hero">
         <div class="hero-content">
-            <h1>¡Hola! Soy <span class="highlight">Nikoly Beatriz Schmaeller Loch</span></h1>
-            <p>Desarrolladora de software Junior Full‑Stack, apasionada por crear experiencias interactivas del universo.</p>
-            <a href="{{ url_for('about') }}" class="btn-primary">Conóceme</a>
+            <h1>Hello! I'm <span class="highlight">Nikoly Beatriz Schmaeller Loch</span></h1>
+            <p>Junior Full-Stack Software Developer passionate about crafting modern, robust, and interactive digital universe experiences.</p>
+            <div class="hero-cta">
+                <a href="{{ url_for('projects') }}" class="btn-primary">View Featured Projects</a>
+                <a href="{{ url_for('about') }}" class="btn-secondary">About Me</a>
+            </div>
         </div>
     </section>
+
     <footer>
-        <p>© 2026 Nikoly Beatriz – Todos los derechos reservados.</p>
+        <p>© 2026 Nikoly Beatriz Schmaeller Loch – All rights reserved.</p>
     </footer>
+
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

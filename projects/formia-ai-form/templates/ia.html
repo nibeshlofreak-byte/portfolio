@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+{% block title %}Chat IA{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="page-header-text">
+    <h1>Chat con Qwen2.5</h1>
+    <p class="subtitle">IA local via Ollama &mdash; datos conectados a MySQL <strong>formulario</strong></p>
+  </div>
+  <div id="ia-status-badge" class="status-badge checking">
+    <span class="status-dot"></span>
+    <span id="ia-status-text">Verificando...</span>
+  </div>
+</div>
+
+<div class="chat-layout">
+
+  <!-- SIDEBAR -->
+  <div class="chat-sidebar">
+    <div class="card sidebar-card">
+      <h3>Estado del modelo</h3>
+      <div id="model-info">
+        <p class="info-row">Modelo: <strong>qwen2.5:3b</strong></p>
+        <p class="info-row">Puerto: <strong>11434</strong></p>
+        <div id="model-list" class="model-list"></div>
+      </div>
+
+      <!-- Barra de progreso instalación -->
+      <div id="install-panel" class="install-panel hidden">
+        <div class="install-bar">
+          <div class="install-bar-fill"></div>
+        </div>
+        <p id="install-log" class="install-log"></p>
+        <button class="btn btn-accent btn-sm" onclick="pullModelo()">
+          &#8659; Descargar modelo
+        </button>
+      </div>
+
+      <hr class="divider" />
+      <h3>Sugerencias</h3>
+      <div class="suggestions">
+        <button class="suggestion-btn" onclick="usarSugerencia('Cuantos registros hay en la base de datos?')">
+          &#128202; Cuantos registros hay?
+        </button>
+        <button class="suggestion-btn" onclick="usarSugerencia('Cual es la obra social mas comun entre los registros?')">
+          &#127973; Obra social mas frecuente
+        </button>
+        <button class="suggestion-btn" onclick="usarSugerencia('Cuantas personas trabajan vs estudian?')">
+          &#128188; Trabajan vs estudian
+        </button>
+        <button class="suggestion-btn" onclick="usarSugerencia('Que es el DNI argentino y para que sirve?')">
+          &#128274; Que es el DNI?
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAT PRINCIPAL -->
+  <div class="chat-main">
+    <div class="card chat-card">
+      <div class="chat-messages" id="chat-messages">
+        <div class="message bot-message">
+          <div class="msg-avatar">&#129302;</div>
+          <div class="msg-bubble">
+            Hola! Soy Qwen2.5 corriendo localmente en tu maquina.<br/>
+            Tengo acceso a los datos de MySQL <strong>formulario</strong>.<br/>
+            En que te puedo ayudar?
+          </div>
+        </div>
+      </div>
+      <div class="chat-input-area">
+        <textarea
+          id="chat-input"
+          class="chat-textarea"
+          placeholder="Escribi tu mensaje... (Enter para enviar, Shift+Enter para nueva linea)"
+          rows="1"
+        ></textarea>
+        <button id="btn-send" class="btn btn-primary btn-send" onclick="enviarMensaje()">&#10148;</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const chatMessages = document.getElementById('chat-messages');
+const chatInput    = document.getElementById('chat-input');
+const btnSend      = document.getElementById('btn-send');
+
+let isSending = false;
+let nextRequestId = 1;
+
+async function checkIAStatus() {
+  const badge     = document.getElementById('ia-status-badge');
+  const text      = document.getElementById('ia-status-text');
+  const modelList = document.getElementById('model-list');
+  const panel     = document.getElementById('install-panel');
+  const logEl     = document.getElementById('install-log');
+
+  try {
+    const resp = await fetch('/ia/status');
+    const data = await resp.json();
+
+    if (data.online) {
+      badge.className = 'status-badge online';
+      text.textContent = 'Ollama online';
+
+      if (data.modelos.length > 0) {
+        modelList.innerHTML = '<p class="info-row">Modelos disponibles:</p>' +
+          data.modelos.map(m => `<span class="model-tag">${m}</span>`).join('');
+        panel.classList.add('hidden');
+      } else {
+        modelList.innerHTML = '<p class="warn-text">Sin modelos descargados.</p>';
+        panel.classList.remove('hidden');
+        logEl.textContent = 'El modelo aun no esta descargado.';
+      }
+    } else {
+      badge.className = 'status-badge offline';
+
+      if (data.instalando) {
+        text.textContent = 'Instalando Ollama...';
+        badge.className = 'status-badge checking';
+        panel.classList.remove('hidden');
+        logEl.textContent = data.log || 'Instalando...';
+      } else {
+        text.textContent = 'Ollama offline';
+        panel.classList.remove('hidden');
+        logEl.textContent = data.log || 'Ollama no esta activo.';
+      }
+    }
+  } catch {
+    badge.className = 'status-badge offline';
+    text.textContent = 'Sin conexion';
+  }
+}
+
+async function pullModelo() {
+  const r = await fetch('/ia/pull', { method: 'POST' });
+  const d = await r.json();
+  document.getElementById('install-log').textContent = d.msg;
+}
+
+function agregarMensaje(texto, tipo) {
+  const div    = document.createElement('div');
+  div.className = `message ${tipo === 'user' ? 'user-message' : 'bot-message'}`;
+  const avatar = document.createElement('div');
+  avatar.className = 'msg-avatar';
+  avatar.textContent = tipo === 'user' ? '\uD83D\uDC64' : '\uD83E\uDD16';
+  const bubble = document.createElement('div');
+  bubble.className = 'msg-bubble';
+  bubble.innerHTML = String(texto ?? '').replace(/\n/g, '<br>');
+  div.appendChild(avatar);
+  div.appendChild(bubble);
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function agregarLoader(requestId) {
+  const div = document.createElement('div');
+  div.className = 'message bot-message loading-msg';
+  div.dataset.loaderId = String(requestId);
+  div.innerHTML = `<div class="msg-avatar">\uD83E\uDD16</div>
+    <div class="msg-bubble">
+      <span class="typing-dot"></span>
+      <span class="typing-dot"></span>
+      <span class="typing-dot"></span>
+    </div>`;
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+async function enviarMensaje() {
+  const mensaje = chatInput.value.trim();
+  if (!mensaje || isSending) return;
+
+  // Evita que se manden varias preguntas a la vez y desordenen el hilo de chat.
+  isSending = true;
+  const requestId = nextRequestId++;
+
+  chatInput.value = '';
+  chatInput.style.height = 'auto';
+  btnSend.disabled = true;
+  agregarMensaje(mensaje, 'user');
+  agregarLoader(requestId);
+
+  try {
+    const resp = await fetch('/ia/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mensaje }),
+    });
+
+    if (!resp.ok) {
+      throw new Error(`HTTP ${resp.status}`);
+    }
+
+    const data = await resp.json();
+    const respuesta = data.respuesta || data.error || 'Sin respuesta.';
+    const loader = document.querySelector(`.loading-msg[data-loader-id="${requestId}"]`);
+    if (loader) loader.remove();
+    agregarMensaje(respuesta, 'bot');
+  } catch (e) {
+    const loader = document.querySelector(`.loading-msg[data-loader-id="${requestId}"]`);
+    if (loader) loader.remove();
+    agregarMensaje('Error de conexion con el servidor.', 'bot');
+  } finally {
+    isSending = false;
+    btnSend.disabled = false;
+    chatInput.focus();
+  }
+}
+
+function usarSugerencia(texto) {
+  chatInput.value = texto;
+  chatInput.focus();
+}
+
+chatInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); enviarMensaje(); }
+});
+chatInput.addEventListener('input', () => {
+  chatInput.style.height = 'auto';
+  chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
+});
+
+checkIAStatus();
+setInterval(checkIAStatus, 8000);  // refresca estado cada 8s
+</script>
+{% endblock %}

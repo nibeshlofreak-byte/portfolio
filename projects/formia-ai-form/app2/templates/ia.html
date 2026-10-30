@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% block title %}Chat IA — Nikoly{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="page-header-text">
+    <h1>&#129302; Chat con Qwen2.5</h1>
+    <p class="subtitle">IA local via Ollama &mdash; datos de SQL Server <strong>Nikoly</strong></p>
+  </div>
+  <div id="ia-status-badge" class="status-badge checking">
+    <span class="status-dot"></span>
+    <span id="ia-status-text">Verificando...</span>
+  </div>
+</div>
+
+<div class="chat-layout">
+  <div class="chat-sidebar">
+    <div class="card sidebar-card">
+      <h3>Estado del modelo</h3>
+      <p class="info-row">Modelo: <strong>qwen2.5:3b</strong></p>
+      <p class="info-row">Puerto: <strong>11434</strong></p>
+      <div id="model-list" class="model-list"></div>
+
+      <div id="install-panel" class="install-panel hidden">
+        <div class="install-bar"><div class="install-bar-fill"></div></div>
+        <p id="install-log" class="install-log"></p>
+        <button class="btn btn-accent btn-sm" onclick="pullModelo()">&#8659; Descargar modelo</button>
+      </div>
+
+      <hr class="divider" />
+      <h3>Sugerencias</h3>
+      <div class="suggestions">
+        <button class="suggestion-btn" onclick="usar('Cuantos registros hay en Nikoly?')">&#128202; Cuantos registros hay?</button>
+        <button class="suggestion-btn" onclick="usar('Cual es la obra social mas comun?')">&#127973; Obra social frecuente</button>
+        <button class="suggestion-btn" onclick="usar('Cuantas personas trabajan vs estudian?')">&#128188; Trabajan vs estudian</button>
+        <button class="suggestion-btn" onclick="usar('Haceme un resumen de los datos cargados')">&#128221; Resumen de datos</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="chat-main">
+    <div class="card chat-card">
+      <div class="chat-messages" id="chat-messages">
+        <div class="message bot-message">
+          <div class="msg-avatar">&#129302;</div>
+          <div class="msg-bubble">
+            Hola! Soy Qwen2.5 corriendo localmente.<br/>
+            Tengo acceso a los datos de <strong>SQL Server &mdash; Nikoly</strong>.<br/>
+            En que te puedo ayudar?
+          </div>
+        </div>
+      </div>
+      <div class="chat-input-area">
+        <textarea id="chat-input" class="chat-textarea"
+                  placeholder="Escribi tu mensaje... (Enter para enviar)" rows="1"></textarea>
+        <button id="btn-send" class="btn btn-primary btn-send" onclick="enviarMensaje()">&#10148;</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const chat  = document.getElementById('chat-messages');
+const input = document.getElementById('chat-input');
+const send  = document.getElementById('btn-send');
+
+let isSending = false;
+let nextRequestId = 1;
+
+async function checkIA() {
+  const badge = document.getElementById('ia-status-badge');
+  const text  = document.getElementById('ia-status-text');
+  const mlist = document.getElementById('model-list');
+  const panel = document.getElementById('install-panel');
+  const log   = document.getElementById('install-log');
+  try {
+    const r = await fetch('/ia/status');
+    const d = await r.json();
+    if (d.online) {
+      badge.className = 'status-badge online';
+      text.textContent = 'Ollama online';
+      if (d.modelos.length) {
+        mlist.innerHTML = '<p class="info-row">Modelos:</p>' +
+          d.modelos.map(m => `<span class="model-tag">${m}</span>`).join('');
+        panel.classList.add('hidden');
+      } else {
+        mlist.innerHTML = '<p class="warn-text">Sin modelos descargados.</p>';
+        panel.classList.remove('hidden');
+        log.textContent = 'El modelo no esta descargado.';
+      }
+    } else {
+      badge.className = d.instalando ? 'status-badge checking' : 'status-badge offline';
+      text.textContent = d.instalando ? 'Instalando Ollama...' : 'Ollama offline';
+      panel.classList.remove('hidden');
+      log.textContent = d.log || 'Ollama no esta activo.';
+    }
+  } catch { badge.className = 'status-badge offline'; text.textContent = 'Sin conexion'; }
+}
+
+async function pullModelo() {
+  const r = await fetch('/ia/pull', { method: 'POST' });
+  const d = await r.json();
+  document.getElementById('install-log').textContent = d.msg;
+}
+
+function addMsg(txt, tipo) {
+  const d  = document.createElement('div');
+  d.className = `message ${tipo === 'user' ? 'user-message' : 'bot-message'}`;
+  const av = document.createElement('div'); av.className = 'msg-avatar';
+  av.textContent = tipo === 'user' ? '\uD83D\uDC64' : '\uD83E\uDD16';
+  const b  = document.createElement('div'); b.className = 'msg-bubble';
+  b.innerHTML = String(txt ?? '').replace(/\n/g, '<br>');
+  d.appendChild(av); d.appendChild(b);
+  chat.appendChild(d); chat.scrollTop = chat.scrollHeight;
+}
+
+function addLoader(requestId) {
+  const d = document.createElement('div');
+  d.className = 'message bot-message loading-msg';
+  d.dataset.loaderId = String(requestId);
+  d.innerHTML = `<div class="msg-avatar">\uD83E\uDD16</div>
+    <div class="msg-bubble"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>`;
+  chat.appendChild(d); chat.scrollTop = chat.scrollHeight;
+}
+
+async function enviarMensaje() {
+  const msg = input.value.trim();
+  if (!msg || isSending) return;
+
+  // Bloquea envíos concurrentes para que no se mezclen respuestas y respuestas.
+  isSending = true;
+  const requestId = nextRequestId++;
+
+  input.value = '';
+  input.style.height = 'auto';
+  send.disabled = true;
+
+  addMsg(msg, 'user');
+  addLoader(requestId);
+
+  try {
+    const r = await fetch('/ia/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mensaje: msg }),
+    });
+
+    if (!r.ok) {
+      throw new Error(`HTTP ${r.status}`);
+    }
+
+    const d = await r.json();
+    const respuesta = d.respuesta || d.error || 'Sin respuesta.';
+    const loader = document.querySelector(`.loading-msg[data-loader-id="${requestId}"]`);
+    if (loader) loader.remove();
+    addMsg(respuesta, 'bot');
+  } catch {
+    const loader = document.querySelector(`.loading-msg[data-loader-id="${requestId}"]`);
+    if (loader) loader.remove();
+    addMsg('Error de conexion con el servidor.', 'bot');
+  } finally {
+    isSending = false;
+    send.disabled = false;
+    input.focus();
+  }
+}
+
+function usar(txt) { input.value = txt; input.focus(); }
+
+input.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); enviarMensaje(); }
+});
+input.addEventListener('input', () => {
+  input.style.height = 'auto';
+  input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+});
+
+checkIA(); setInterval(checkIA, 8000);
+</script>
+{% endblock %}
