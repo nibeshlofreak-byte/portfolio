@@ -13,8 +13,8 @@
             <li><a href="#home" class="active">Home</a></li>
             <li><a href="#about">About Me</a></li>
             <li><a href="#projects">Projects</a></li>
+            <li><a href="#evaluator" class="portal-nav-btn">Evaluator Dossier</a></li>
             <li><a href="#contact">Contact</a></li>
-            <li><a href="templates/login.html" class="portal-nav-btn">Teacher Portal</a></li>
         </ul>
     </nav>
 
@@ -155,6 +155,95 @@
                     </div>
                 </div>
             </article>
+        </div>
+    </section>
+
+    <section id="evaluator" class="content">
+        <h2>Academic Evaluator &amp; Faculty Dossier</h2>
+        <p class="section-subtitle">Dedicated academic review overview, technical competency rubrics, and project assessment matrix.</p>
+
+        <div class="about-card" style="border-left: 4px solid var(--primary-neon); margin-bottom: 30px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;">
+                <div>
+                    <span style="color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">Student Candidate</span>
+                    <h3 style="margin: 5px 0 0; color: #fff; font-size: 1.25rem;">Nikoly Beatriz Schmaeller Loch</h3>
+                </div>
+                <div>
+                    <span style="color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">Academic Program</span>
+                    <h3 style="margin: 5px 0 0; color: #fff; font-size: 1.1rem;">TSDS (2nd Year)</h3>
+                </div>
+                <div>
+                    <span style="color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">Evaluation Status</span>
+                    <h3 style="margin: 5px 0 0; color: #00ffa3; font-size: 1.2rem;">Ready for Review</h3>
+                </div>
+                <div>
+                    <span style="color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">Repository Access</span>
+                    <h3 style="margin: 5px 0 0; color: var(--primary-neon); font-size: 1.1rem;">Public &amp; Verified</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="skills-grid" style="margin-bottom: 30px;">
+            <div class="skill-box">
+                <h4>1. PharmaPOS Evaluation</h4>
+                <p><strong>Focus:</strong> Complex Business Logic &amp; Multi-Branch Synchronization</p>
+                <p style="margin-top: 8px;">Demonstrates strict FEFO inventory algorithmic deduction, bcrypt user security, Matplotlib data visualization, and thermal ticket printing.</p>
+                <div style="margin-top: 12px;">
+                    <a href="https://github.com/nibeshlofreak-byte/portfolio/tree/main/projects/pharmacy-pos" target="_blank" class="btn-code" style="padding: 4px 10px; font-size: 0.8rem;">Inspect Code &amp; Architecture</a>
+                </div>
+            </div>
+
+            <div class="skill-box">
+                <h4>2. FormIA Evaluation</h4>
+                <p><strong>Focus:</strong> Local AI Integration &amp; Multi-DB Backend</p>
+                <p style="margin-top: 8px;">Demonstrates private on-device LLM querying (Ollama + Qwen2.5:3b), dual MySQL (PyMySQL) / SQL Server (pyodbc) data layers, and Faker synthetic testing.</p>
+                <div style="margin-top: 12px;">
+                    <a href="https://github.com/nibeshlofreak-byte/portfolio/tree/main/projects/formia-ai-form" target="_blank" class="btn-code" style="padding: 4px 10px; font-size: 0.8rem;">Inspect Code &amp; Architecture</a>
+                </div>
+            </div>
+
+            <div class="skill-box">
+                <h4>3. Lotus eSports Evaluation</h4>
+                <p><strong>Focus:</strong> Cross-Platform App Architecture &amp; REST APIs</p>
+                <p style="margin-top: 8px;">Demonstrates Python Flet (Flutter engine), FastAPI REST API with Pydantic validation, cryptographic offline store fallback, and dynamic bracket tournament workflows.</p>
+                <div style="margin-top: 12px;">
+                    <a href="https://github.com/nibeshlofreak-byte/portfolio/tree/main/projects/lotus-esports" target="_blank" class="btn-code" style="padding: 4px 10px; font-size: 0.8rem;">Inspect Code &amp; Architecture</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interactive Quick Feedback Box (Stores locally in browser) -->
+        <div class="about-card">
+            <h3 style="margin-top: 0; color: var(--primary-neon); font-size: 1.3rem;">Evaluator Feedback &amp; Grade Notes</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px;">
+                Faculty members can record qualitative feedback and score notes directly below:
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 15px;">
+                <div>
+                    <label style="display: block; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px;">Evaluator Name / Title</label>
+                    <input type="text" id="staticEvaluatorName" placeholder="e.g. Professor / Faculty Reviewer" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--card-border); border-radius: 6px; color: #fff; font-size: 0.9rem;" />
+                </div>
+                <div>
+                    <label style="display: block; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px;">Assigned Score</label>
+                    <select id="staticScore" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--card-border); border-radius: 6px; color: #fff; font-size: 0.9rem;">
+                        <option value="10">10 – Outstanding (Sobresaliente)</option>
+                        <option value="9">9 – Excellent (Excelente)</option>
+                        <option value="8">8 – Very Good (Muy Bueno)</option>
+                        <option value="7">7 – Good (Bueno)</option>
+                        <option value="6">6 – Approved (Aprobado)</option>
+                    </select>
+                </div>
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px;">Academic Feedback &amp; Observations</label>
+                <textarea id="staticFeedback" rows="3" placeholder="Enter comments regarding code cleanliness, DB modeling, and design patterns..." style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--card-border); border-radius: 6px; color: #fff; font-size: 0.9rem; resize: vertical;"></textarea>
+            </div>
+            <button type="button" class="btn-primary" onclick="saveEvaluatorFeedback()" style="border: none; cursor: pointer; padding: 8px 20px; font-size: 0.95rem;">
+                💾 Save Evaluator Note
+            </button>
+            <div id="feedbackSavedNotice" style="display: none; margin-top: 12px; padding: 10px; background: rgba(0, 255, 163, 0.15); border: 1px solid #00ffa3; border-radius: 6px; color: #00ffa3; font-size: 0.9rem;">
+                Feedback successfully saved in your browser session. Thank you for evaluating!
+            </div>
         </div>
     </section>
 
