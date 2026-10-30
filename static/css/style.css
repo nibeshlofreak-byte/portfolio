@@ -413,3 +413,49 @@ footer {
         height: 200px;
     }
 }
+
+/* Flash Alerts */
+.flash-alert {
+    padding: 12px 18px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+.flash-success {
+    background: rgba(0, 255, 163, 0.15);
+    border: 1px solid #00ffa3;
+    color: #00ffa3;
+}
+.flash-error {
+    background: rgba(255, 82, 82, 0.15);
+    border: 1px solid #ff5252;
+    color: #ff8585;
+}
+.flash-warning {
+    background: rgba(255, 171, 0, 0.15);
+    border: 1px solid #ffab00;
+    color: #ffd166;
+}
+.flash-info {
+    background: rgba(0, 229, 255, 0.15);
+    border: 1px solid var(--primary-neon);
+    color: var(--primary-neon);
+}
+
+.portal-nav-btn {
+    background: rgba(0, 229, 255, 0.12) !important;
+    border: 1px solid var(--primary-neon);
+    border-radius: 20px;
+    padding: 5px 14px !important;
+    color: var(--primary-neon) !important;
+    font-weight: 600 !important;
+    transition: all 0.2s !important;
+}
+.portal-nav-btn:hover {
+    background: var(--primary-neon) !important;
+    color: #05070f !important;
+    text-shadow: none !important;
+    text-decoration: none !important;
+}
+

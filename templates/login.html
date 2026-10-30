@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teacher &amp; Evaluator Portal – Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+    <nav class="navbar">
+        <a href="{{ url_for('index') }}" class="nav-brand">NIKOLY.DEV</a>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About Me</a></li>
+            <li><a href="{{ url_for('projects') }}">Projects</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact</a></li>
+        </ul>
+    </nav>
+
+    <main class="content" style="max-width: 520px; padding-top: 130px;">
+        <div class="about-card" style="padding: 35px 30px;">
+            <div style="text-align: center; margin-bottom: 25px;">
+                <div style="font-size: 2.5rem; margin-bottom: 10px;">🎓</div>
+                <h2 style="font-size: 1.8rem; margin: 0 0 8px; color: var(--primary-neon);">Teacher &amp; Evaluator Portal</h2>
+                <p style="color: var(--text-muted); font-size: 0.95rem; margin: 0;">Access student academic evaluations, rubrics, and project feedback.</p>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div style="margin-bottom: 20px;">
+                        {% for category, message in messages %}
+                            <div class="flash-alert flash-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <form method="POST" action="{{ url_for('login', next=request.args.get('next')) }}">
+                <div style="margin-bottom: 18px;">
+                    <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem; color: #e2e8f0;">Username or Email</label>
+                    <input type="text" name="username" required autofocus placeholder="e.g. professor" 
+                           style="width: 100%; padding: 12px 14px; background: rgba(0,0,0,0.4); border: 1px solid var(--card-border); border-radius: 8px; color: #fff; font-size: 1rem; outline: none;" />
+                </div>
+
+                <div style="margin-bottom: 24px;">
+                    <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem; color: #e2e8f0;">Password</label>
+                    <input type="password" name="password" required placeholder="••••••••" 
+                           style="width: 100%; padding: 12px 14px; background: rgba(0,0,0,0.4); border: 1px solid var(--card-border); border-radius: 8px; color: #fff; font-size: 1rem; outline: none;" />
+                </div>
+
+                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 1.05rem; border: none; cursor: pointer;">
+                    Sign In to Evaluator Portal
+                </button>
+            </form>
+
+            <div style="margin-top: 25px; padding: 14px; background: rgba(0, 229, 255, 0.08); border: 1px dashed var(--primary-neon); border-radius: 8px; font-size: 0.85rem; color: #cbd5e1;">
+                <strong style="color: var(--primary-neon);">Demo Teacher Credentials:</strong><br />
+                User: <code style="background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px;">professor</code> &nbsp;|&nbsp; 
+                Password: <code style="background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px;">prof2026</code>
+            </div>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="{{ url_for('index') }}" style="color: var(--text-muted); font-size: 0.9rem; text-decoration: none;">← Return to Main Portfolio</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 Nikoly Beatriz Schmaeller Loch – All rights reserved.</p>
+    </footer>
+</body>
+</html>

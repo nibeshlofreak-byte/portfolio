@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Academic Evaluator Dashboard – Nikoly Beatriz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+    <nav class="navbar">
+        <a href="{{ url_for('index') }}" class="nav-brand">NIKOLY.DEV // EVALUATOR</a>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('projects') }}">Projects</a></li>
+            <li><a href="{{ url_for('evaluator_dashboard') }}" class="active">Dashboard</a></li>
+            <li><a href="{{ url_for('logout') }}" style="color: #ff5252;">Sign Out</a></li>
+        </ul>
+    </nav>
+
+    <main class="content" style="max-width: 1100px;">
+        <!-- Header Section -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 15px; margin-bottom: 25px;">
+            <div>
+                <h2>Academic Evaluator Portal</h2>
+                <p class="section-subtitle" style="margin-bottom: 0;">Project Grading, Technical Rubrics &amp; Student Feedback</p>
+            </div>
+            <div style="text-align: right;">
+                <span style="display: inline-block; padding: 6px 14px; background: rgba(0, 229, 255, 0.12); border: 1px solid var(--primary-neon); border-radius: 20px; font-size: 0.85rem; color: var(--primary-neon);">
+                    Logged in as: <strong>{{ current_user_name }}</strong> (Faculty)
+                </span>
+            </div>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div style="margin-bottom: 25px;">
+                    {% for category, message in messages %}
+                        <div class="flash-alert flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Student Profile & Academic Context -->
+        <div class="about-card" style="margin-bottom: 30px; border-left: 4px solid var(--primary-neon);">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                <div>
+                    <span style="color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">Student Candidate</span>
+                    <h3 style="margin: 5px 0 0; color: #fff; font-size: 1.25rem;">Nikoly Beatriz Schmaeller Loch</h3>
+                </div>
+                <div>
+                    <span style="color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">Academic Degree</span>
+                    <h3 style="margin: 5px 0 0; color: #fff; font-size: 1.1rem;">TSDS (2nd Year)</h3>
+                </div>
+                <div>
+                    <span style="color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">Total Evaluated</span>
+                    <h3 style="margin: 5px 0 0; color: var(--primary-neon); font-size: 1.25rem;">{{ total_evals }} Review{% if total_evals != 1 %}s{% endif %}</h3>
+                </div>
+                <div>
+                    <span style="color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">Average Grade</span>
+                    <h3 style="margin: 5px 0 0; color: #00ffa3; font-size: 1.25rem;">{{ avg_score }} / 10</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grading & Feedback Form -->
+        <div class="about-card" style="margin-bottom: 40px;">
+            <h3 style="margin-top: 0; color: var(--primary-neon); font-size: 1.35rem; display: flex; align-items: center; gap: 10px;">
+                <span>✍️</span> Submit New Project Evaluation
+            </h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 25px;">
+                Select a project below to grade technical execution, software architecture, and provide constructive feedback.
+            </p>
+
+            <form method="POST" id="evalForm" action="{{ url_for('submit_evaluation', project_id=projects[0].id if projects else 1) }}">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 20px;">
+                    <div>
+                        <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem;">Select Project to Review</label>
+                        <select id="projectSelector" style="width: 100%; padding: 10px 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--card-border); border-radius: 8px; color: #fff; font-size: 0.95rem; outline: none;" onchange="updateFormAction(this.value)">
+                            {% for p in projects %}
+                            <option value="{{ p.id }}">{{ p.title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem;">Score (1 to 10)</label>
+                        <select name="score" style="width: 100%; padding: 10px 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--card-border); border-radius: 8px; color: #fff; font-size: 0.95rem; outline: none;">
+                            <option value="10" selected>10 – Outstanding (Sobresaliente)</option>
+                            <option value="9">9 – Excellent (Excelente)</option>
+                            <option value="8">8 – Very Good (Muy Bueno)</option>
+                            <option value="7">7 – Good (Bueno)</option>
+                            <option value="6">6 – Approved (Aprobado)</option>
+                            <option value="5">5 – Needs Revision (A Regularizar)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem;">Evaluation Status</label>
+                        <select name="status" style="width: 100%; padding: 10px 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--card-border); border-radius: 8px; color: #fff; font-size: 0.95rem; outline: none;">
+                            <option value="Outstanding" selected>Outstanding (Sobresaliente)</option>
+                            <option value="Approved">Approved (Aprobado)</option>
+                            <option value="Needs Revision">Needs Revision (Revisión requerida)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 18px;">
+                    <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem;">Architecture &amp; Database Design Feedback</label>
+                    <textarea name="architecture_feedback" rows="2" placeholder="e.g. Clean layered architecture, multi-branch model separation, appropriate relational design..." style="width: 100%; padding: 10px 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--card-border); border-radius: 8px; color: #fff; font-size: 0.95rem; outline: none; resize: vertical;"></textarea>
+                </div>
+
+                <div style="margin-bottom: 18px;">
+                    <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem;">Code Quality &amp; Clean Code Feedback</label>
+                    <textarea name="code_quality_feedback" rows="2" placeholder="e.g. Robust error handling, modular services, PEP 8 conventions..." style="width: 100%; padding: 10px 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--card-border); border-radius: 8px; color: #fff; font-size: 0.95rem; outline: none; resize: vertical;"></textarea>
+                </div>
+
+                <div style="margin-bottom: 22px;">
+                    <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem;">General Remarks / Academic Verdict *</label>
+                    <textarea name="general_comments" rows="3" required placeholder="Write overall comments, strengths, and suggestions for the student..." style="width: 100%; padding: 10px 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--card-border); border-radius: 8px; color: #fff; font-size: 0.95rem; outline: none; resize: vertical;"></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary" style="padding: 10px 24px; font-size: 1rem; border: none; cursor: pointer;">
+                    💾 Save &amp; Publish Academic Evaluation
+                </button>
+            </form>
+        </div>
+
+        <!-- Evaluation Records List -->
+        <div>
+            <h3 style="color: #fff; font-size: 1.4rem; margin-bottom: 20px;">
+                📋 Evaluator Feedback History ({{ evaluations|length }})
+            </h3>
+
+            {% if evaluations %}
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    {% for eval in evaluations %}
+                    <div class="about-card" style="padding: 24px; margin-bottom: 0;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px;">
+                            <div>
+                                <h4 style="margin: 0 0 5px; font-size: 1.2rem; color: #fff;">
+                                    {{ eval.project.title }}
+                                </h4>
+                                <span style="font-size: 0.85rem; color: var(--text-muted);">
+                                    Evaluated by: <strong>{{ eval.evaluator_name }}</strong> &bull; {{ eval.created_at.strftime('%Y-%m-%d %H:%M') }}
+                                </span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <span style="background: rgba(0, 229, 255, 0.15); color: var(--primary-neon); border: 1px solid var(--primary-neon); padding: 4px 12px; border-radius: 20px; font-weight: 700; font-size: 0.95rem;">
+                                    Score: {{ eval.score }} / 10
+                                </span>
+                                <span style="background: {% if eval.status == 'Outstanding' %}rgba(0, 255, 163, 0.15){% elif eval.status == 'Approved' %}rgba(0, 229, 255, 0.15){% else %}rgba(255, 82, 82, 0.15){% endif %}; color: {% if eval.status == 'Outstanding' %}#00ffa3{% elif eval.status == 'Approved' %}var(--primary-neon){% else %}#ff5252{% endif %}; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">
+                                    {{ eval.status }}
+                                </span>
+                                <form method="POST" action="{{ url_for('delete_evaluation', evaluation_id=eval.id) }}" onsubmit="return confirm('Are you sure you want to remove this evaluation?');" style="margin: 0;">
+                                    <button type="submit" style="background: transparent; border: none; color: #ff5252; cursor: pointer; font-size: 0.85rem; padding: 4px 8px;" title="Delete Review">
+                                        🗑️ Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        {% if eval.architecture_feedback %}
+                        <div style="margin-bottom: 8px;">
+                            <strong style="color: var(--primary-neon); font-size: 0.9rem;">Architecture &amp; Design:</strong>
+                            <p style="margin: 4px 0 0; color: #cbd5e1; font-size: 0.95rem;">{{ eval.architecture_feedback }}</p>
+                        </div>
+                        {% endif %}
+
+                        {% if eval.code_quality_feedback %}
+                        <div style="margin-bottom: 8px;">
+                            <strong style="color: var(--primary-neon); font-size: 0.9rem;">Code Quality &amp; Clean Code:</strong>
+                            <p style="margin: 4px 0 0; color: #cbd5e1; font-size: 0.95rem;">{{ eval.code_quality_feedback }}</p>
+                        </div>
+                        {% endif %}
+
+                        <div>
+                            <strong style="color: #fff; font-size: 0.9rem;">General Academic Comments:</strong>
+                            <p style="margin: 4px 0 0; color: #e2e8f0; font-size: 0.95rem;">{{ eval.general_comments }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="about-card" style="text-align: center; padding: 40px;">
+                    <p style="color: var(--text-muted); margin: 0;">No evaluation reviews recorded yet. Submit your first assessment above!</p>
+                </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 Nikoly Beatriz Schmaeller Loch – All rights reserved.</p>
+    </footer>
+
+    <script>
+        function updateFormAction(projectId) {
+            document.getElementById('evalForm').action = "/evaluator/submit/" + projectId;
+        }
+    </script>
+</body>
+</html>

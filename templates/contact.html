@@ -14,6 +14,12 @@
             <li><a href="{{ url_for('about') }}">About Me</a></li>
             <li><a href="{{ url_for('projects') }}">Projects</a></li>
             <li><a href="{{ url_for('contact') }}" class="active">Contact</a></li>
+            {% if is_logged_in %}
+            <li><a href="{{ url_for('evaluator_dashboard') }}" class="portal-nav-btn">Evaluator Panel</a></li>
+            <li><a href="{{ url_for('logout') }}" style="color: #ff5252;">Sign Out</a></li>
+            {% else %}
+            <li><a href="{{ url_for('login') }}" class="portal-nav-btn">Teacher Portal</a></li>
+            {% endif %}
         </ul>
     </nav>
 

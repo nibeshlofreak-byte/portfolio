@@ -36,7 +36,23 @@ Welcome to the personal software engineering portfolio of **Nikoly Beatriz Schma
 
 ---
 
-## 🛠️ Portfolio Technology Stack
+## 🎓 Teacher & Academic Evaluator Portal
+
+The portfolio includes a dedicated **Academic Evaluator Portal** designed specifically for professors and academic evaluators to inspect projects, assign scores (1 to 10), and submit detailed technical feedback.
+
+### 🔑 Demo Teacher Credentials
+- **Access URL**: `/login` (via the **Teacher Portal** navigation button)
+- **Username**: `professor`
+- **Password**: `prof2026`
+- **Role**: Academic Faculty Evaluator
+
+### 📋 Features in Evaluator Dashboard (`/evaluator`):
+- **Candidate Overview**: Student profile, academic degree progress (TSDS - 2nd Year).
+- **Interactive Project Rubric**: Submit architectural design notes, code quality reviews, and general comments for any project.
+- **Persistent Feedback Log**: Evaluations are stored in the database with timestamps, scores, and status tags (`Outstanding`, `Approved`, `Needs Revision`).
+- **Review Management**: Delete or update previous evaluations.
+
+---
 
 - **Backend**: Python 3.9+, Flask, Flask-SQLAlchemy, Jinja2
 - **Databases**: SQLite (zero-config default), MySQL (production configuration)
