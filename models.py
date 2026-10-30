@@ -67,7 +67,7 @@ DEFAULT_PROJECTS = [
         "title": "FormIA – AI-Powered Smart Form & Local LLM Assistant",
         "description": "Intelligent web platform integrating dynamic multi-attribute form validation with on-device private AI (Ollama + Qwen2.5). Generates synthetic testing profiles on-demand with Faker and features a conversational assistant for profile inquiries and data analytics.",
         "technologies": "Python, Flask, Ollama, Qwen2.5, MySQL, SQL Server, Faker, JavaScript",
-        "image_url": "/static/img/formia_ai.svg",
+        "image_url": "/static/img/formia_cat.jpg",
         "github_url": "https://github.com/nibeshlofreak-byte/portfolio/tree/main/projects/formia-ai-form"
     },
     {
@@ -95,6 +95,11 @@ def seed_database():
             )
             db.session.add(project)
         db.session.commit()
+    else:
+        formia = Project.query.filter_by(id=2).first()
+        if formia and formia.image_url != '/static/img/formia_cat.jpg':
+            formia.image_url = '/static/img/formia_cat.jpg'
+            db.session.commit()
 
     # Seed default professor user
     if User.query.filter_by(username='professor').first() is None:
