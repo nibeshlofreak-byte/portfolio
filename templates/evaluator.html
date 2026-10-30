@@ -65,8 +65,8 @@
 
         <!-- Grading & Feedback Form -->
         <div class="about-card" style="margin-bottom: 40px;">
-            <h3 style="margin-top: 0; color: var(--primary-neon); font-size: 1.35rem; display: flex; align-items: center; gap: 10px;">
-                <span>✍️</span> Submit New Project Evaluation
+            <h3 style="margin-top: 0; font-size: 1.35rem;">
+                Submit New Project Evaluation
             </h3>
             <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 25px;">
                 Select a project below to grade technical execution, software architecture, and provide constructive feedback.
@@ -121,7 +121,7 @@
                 </div>
 
                 <button type="submit" class="btn-primary" style="padding: 10px 24px; font-size: 1rem; border: none; cursor: pointer;">
-                    💾 Save &amp; Publish Academic Evaluation
+                    Save &amp; Publish Academic Evaluation
                 </button>
             </form>
         </div>
@@ -129,7 +129,7 @@
         <!-- Evaluation Records List -->
         <div>
             <h3 style="color: #fff; font-size: 1.4rem; margin-bottom: 20px;">
-                📋 Evaluator Feedback History ({{ evaluations|length }})
+                Evaluator Feedback History ({{ evaluations|length }})
             </h3>
 
             {% if evaluations %}
@@ -146,15 +146,15 @@
                                 </span>
                             </div>
                             <div style="display: flex; align-items: center; gap: 12px;">
-                                <span style="background: rgba(0, 229, 255, 0.15); color: var(--primary-neon); border: 1px solid var(--primary-neon); padding: 4px 12px; border-radius: 20px; font-weight: 700; font-size: 0.95rem;">
+                                <span style="background: rgba(217, 70, 239, 0.15); color: #f0abfc; border: 1px solid rgba(217, 70, 239, 0.4); padding: 4px 12px; border-radius: 20px; font-weight: 700; font-size: 0.95rem;">
                                     Score: {{ eval.score }} / 10
                                 </span>
-                                <span style="background: {% if eval.status == 'Outstanding' %}rgba(0, 255, 163, 0.15){% elif eval.status == 'Approved' %}rgba(0, 229, 255, 0.15){% else %}rgba(255, 82, 82, 0.15){% endif %}; color: {% if eval.status == 'Outstanding' %}#00ffa3{% elif eval.status == 'Approved' %}var(--primary-neon){% else %}#ff5252{% endif %}; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">
+                                <span style="background: {% if eval.status == 'Outstanding' %}rgba(0, 255, 163, 0.15){% elif eval.status == 'Approved' %}rgba(217, 70, 239, 0.15){% else %}rgba(255, 82, 82, 0.15){% endif %}; color: {% if eval.status == 'Outstanding' %}#00ffa3{% elif eval.status == 'Approved' %}#f0abfc{% else %}#ff5252{% endif %}; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">
                                     {{ eval.status }}
                                 </span>
                                 <form method="POST" action="{{ url_for('delete_evaluation', evaluation_id=eval.id) }}" onsubmit="return confirm('Are you sure you want to remove this evaluation?');" style="margin: 0;">
                                     <button type="submit" style="background: transparent; border: none; color: #ff5252; cursor: pointer; font-size: 0.85rem; padding: 4px 8px;" title="Delete Review">
-                                        🗑️ Delete
+                                        Delete
                                     </button>
                                 </form>
                             </div>
@@ -193,6 +193,7 @@
         <p>© 2026 Nikoly Beatriz Schmaeller Loch – All rights reserved.</p>
     </footer>
 
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     <script>
         function updateFormAction(projectId) {
             document.getElementById('evalForm').action = "/evaluator/submit/" + projectId;
