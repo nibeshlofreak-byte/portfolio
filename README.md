@@ -93,7 +93,7 @@ Open [http://localhost:5000](http://localhost:5000) in your browser. Default pro
 
 ## 📬 Contact & Connect
 
-- **Email**: [nikolybeatrizschmaellerloxh@gmail.com](mailto:nikolybeatrizschmaellerloxh@gmail.com)
+- **Email**: [nikolybeatrizschmaeller@gmail.com](mailto:nikolybeatrizschmaeller@gmail.com)
 - **GitHub**: [github.com/nibeshlofreak-byte](https://github.com/nibeshlofreak-byte)
 - **LinkedIn**: [linkedin.com/in/nikolybeatriz](https://www.linkedin.com/in/nikolybeatriz)
 
